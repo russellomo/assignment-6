@@ -22,7 +22,7 @@
 	<div class="row" style="margin-top: 10px;">
 		<div class="btn-group">
 			<button type="button" @click="undo()" class="btn btn-primary btn-sm">Undo</button>
-			<button type="button" class="btn btn-primary btn-sm">Redo</button>
+			<button type="button" @click="redo()" class="btn btn-primary btn-sm">Redo</button>
 		</div>
 	</div>
 	
@@ -51,33 +51,34 @@
       },
       stateIndex: 0,
       states: [],
+      redoStates: []
     },
     mounted: function () {
-    	this.states.push({
-      	'Sunday': false,
-      	'Monday': false, 
-      	'Tuesday': false, 
-      	'Wednesday': false, 
-      	'Thursday': false, 
-      	'Friday': false, 
-      	'Saturday': false
-      });
+    	
     },
     methods: {
     	selectOption: function(selection) {
+    		let saveState = Object.assign({}, this.currentState); //ECMAscript 6 solution to copying objects
+    		this.states.push(saveState);
     		this.currentState[selection] = true;
-    		this.stateIndex++;
-    		console.log(this.stateIndex);
-    		this.states.push(this.currentState);
+     		console.log(this.states);
     	},
     	undo: function() {
-    		console.log(this.stateIndex);
-    		if(this.states.length >= 1 && this.stateIndex > 0) {
-    			this.stateIndex--;
-    			this.currentState = this.states[this.stateIndex];
+    		if(this.states.length >= 1) {
+    			let state = this.states.pop(); //pop off last state
+    			console.log(state);
+    			this.redoStates.push(this.currentState); // place the currentState into the redoStates list
+    			this.currentState = state; // set our current state to the state we had just popped off
     			console.log(this.currentState);
     			console.log(this.states);
-    			console.log(this.stateIndex);
+    			console.log(this.redoStates);
+    		}
+    	},
+    	redo: function() {
+    		if(this.redoStates.length >= 1) {
+    			let state = this.redoStates.pop(); // pop off the last state in the redoStates list
+    			this.states.push(this.currentState); // place the currentState into the states list
+    			this.currentState = state; //set our current state to the state we had just popped off
     		}
     	}
     }
