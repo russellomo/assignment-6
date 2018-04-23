@@ -19,10 +19,13 @@
 			{{ selection }} 
 		</button>
 	</div>
-
+	<div class="row" style="margin-top: 10px;">
+		<div class="btn-group">
+			<button type="button" @click="undo()" class="btn btn-primary btn-sm">Undo</button>
+			<button type="button" class="btn btn-primary btn-sm">Redo</button>
+		</div>
+	</div>
 	
-		
-
   </div>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -46,14 +49,37 @@
       	'Friday': false, 
       	'Saturday': false
       },
+      stateIndex: 0,
       states: [],
+    },
+    mounted: function () {
+    	this.states.push({
+      	'Sunday': false,
+      	'Monday': false, 
+      	'Tuesday': false, 
+      	'Wednesday': false, 
+      	'Thursday': false, 
+      	'Friday': false, 
+      	'Saturday': false
+      });
     },
     methods: {
     	selectOption: function(selection) {
     		this.currentState[selection] = true;
+    		this.stateIndex++;
+    		console.log(this.stateIndex);
     		this.states.push(this.currentState);
-    		console.log(this.currentState);
     	},
+    	undo: function() {
+    		console.log(this.stateIndex);
+    		if(this.states.length >= 1 && this.stateIndex > 0) {
+    			this.stateIndex--;
+    			this.currentState = this.states[this.stateIndex];
+    			console.log(this.currentState);
+    			console.log(this.states);
+    			console.log(this.stateIndex);
+    		}
+    	}
     }
     });
   </script>
