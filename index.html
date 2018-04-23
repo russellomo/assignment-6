@@ -61,6 +61,7 @@
     		let saveState = Object.assign({}, this.currentState); //ECMAscript 6 solution to copying objects
     		this.states.push(saveState);
     		this.currentState[selection] = true;
+    		this.redoStates = []; //set the redoStates to empty array, since new actions imply a movement beyond the past
      		console.log(this.states);
     	},
     	undo: function() {
