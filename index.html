@@ -26,11 +26,14 @@
 				<button type="button" @click="undo()" class="btn btn-primary btn-sm">Undo</button>
 				<button type="button" @click="redo()" class="btn btn-primary btn-sm">Redo</button>
 			</div>
+			<br>
+			<label>Undo State</label>
 			<ul>
 				<li v-for="state in states">
 				{{ showState(state) }}
 				</li>
 			</ul>
+			<label>Redo States</label>
 			<ul>
 				<li v-for="state in redoStates">
 				{{ showState(state) }}
@@ -94,6 +97,7 @@
     			this.currentState = state; //set our current state to the state we had just popped off
     		}
     	},
+		// helper method for 
 		showState(state) {
 			let string = '';
 			for(var prop in state) {
